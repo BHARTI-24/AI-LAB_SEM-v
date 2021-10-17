@@ -5,7 +5,7 @@ game_going = True
 
 winner = None
 
-empty_count = 0
+
 
 
 demo_board= ["1","2","3",
@@ -20,7 +20,7 @@ board = ["-", "-", "-",
 #by default
 first = computer = "O"    
 
-second = current_player = "X"
+second = human = "X"
 
 player = first
 
@@ -40,26 +40,26 @@ def display_demo_board():
     
     # funct  to choose who play first , and choose 'x' or 'o' ...
 def choose():
-    global current_player,computer,first,second,player
+    global human,computer,first,second,player
     
     you=input("\t\t Choose 'X' or 'O'  :  ")
     
-    current_player = you.upper()
+    human = you.upper()
     
     
-    if current_player == "O":
+    if human == "O":
         computer = "X"
-    elif current_player == "X":
+    elif human == "X":
         computer = "O"
         
     choice=input("\t\t  Want to play  first>> say 'y' or 'n' :  ")
     if choice == 'y' or choice == 'Y':
-        first = current_player
+        first = human
         second = computer
         
     elif choice == 'n' or choice == 'N':
         first = computer
-        second = current_player
+        second = human
     player = first  
     
     return
@@ -133,11 +133,7 @@ def play_game():
     
     
     while game_going:
-          handle_turn(player)
-          # for keeping count of the  empty spaces
-          
-         
-          print("the count iis :> " + str(empty_count))
+          handle_turn()
           
           check_if_over()
           flip_player()
@@ -145,7 +141,7 @@ def play_game():
     if winner == "X" or winner == "O":
         if winner == computer:
            print("\n\t You lost !!  \n computer won .. \n  symbol: "+ winner)
-        elif winner == current_player:
+        elif winner == human:
            print("\n\t You Won .. \n your symbol: "+ winner)
         response()
     elif winner== None:
@@ -165,8 +161,8 @@ def response():
         quit()
     return
 def handle_turn(player):
-    global current_player,empty_count
-    if player == current_player:
+    global human,empty_count
+    if player == human:
        player_name = "Your"
     else:
         player_name = "\t\tComputer"
@@ -174,7 +170,7 @@ def handle_turn(player):
     print(player_name + "'s turn." + "[ "+player+" ]")
     
     
-    if player == current_player:
+    if player == human:
         position=input(" to quit 'q' ,else  choose a position from 1-9: ")
         
         valid = False
@@ -188,7 +184,7 @@ def handle_turn(player):
                 print("\t\t----Exited----")
                 quit()
                 
-            empty_count += 1    
+              
             position = int(position)-1
             if board[position] == "-":
                 valid = True
@@ -322,244 +318,9 @@ def flip_player():
 
 def intelligence():
      
-    global computer, empty_count
-    
-    print("yet to implement") 
-    
-    if  empty_count == 0:
-        # default set by me
-        board[0]=computer
-        
-    elif empty_count == 1:
-       
-            
-         
-         check_prior_pos1()
-         
-    # elif empty_count == 2:
-       
-            
-        
-    # elif empty_count == 3:
-       
-            
-        
-        
-    # elif empty_count == 4:
-       
-            
-        
-         
-    # elif empty_count == 5:
-       
-            
         
     return
     
     
-def check_prior_pos1():
-    
-    print("in check_prior_pos1 function ")
-    
-    if board[0]== board[2] == board[6] == board[8] == current_player:
-        x = pref_odd()
-        board[x] = computer
-    
-    
-    return
-
-def pref_odd():
-    if i in range (1,8,2):
-        pref_odd_board[i] = 0
-       
-    pref_odd_board[1] = 1
-    pref_odd_board[3] = 3
-    pref_odd_board[5] = 5
-    pref_odd_board[7] = 7
-    
-    
-    
-    retun  value(min(pref_odd_board[1],pref_odd_board[3],pref_odd_board[5],pref_odd_board[7]))
-    
-def ai_calculate_position():
-    global computer
-    
-    
-    sleeping("",2)
-         # case when computer got second turn
-    if   board[0]==current_player and board[1]==board[2]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-":
-         board[2] = computer
-    elif   board[1]==current_player and board[0]==board[2]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-":
-           board[6] = computer
-    elif   board[2]==current_player and board[1]==board[0]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-":
-           board[0] = computer
-    elif   board[3]==current_player and board[1]==board[2]==board[0]== board[4]==board[5]==board[6]==board[7]==board[8]=="-":
-           board[2] = computer
-    elif   board[4]==current_player and board[1]==board[2]==board[3]== board[0]==board[5]==board[6]==board[7]==board[8]=="-":
-           board[2] = computer
-    elif   board[5]==current_player and board[1]==board[2]==board[3]== board[4]==board[0]==board[6]==board[7]==board[8]=="-":
-           board[0] = computer
-    elif   board[6]==current_player and board[1]==board[2]==board[3]== board[4]==board[5]==board[0]==board[7]==board[8]=="-":
-           board[8] = computer
-    elif   board[7]==current_player and board[1]==board[2]==board[3]== board[4]==board[5]==board[6]==board[0]==board[8]=="-":
-           board[2] = computer
-    elif   board[8]==current_player and board[1]==board[2]==board[3]== board[4]==board[5]==board[6]==board[7]==board[0]=="-":
-           board[6] = computer
-           
-    # case when computer got third turn , computer placed first 
-    elif   board[0]==current_player and board[1]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-" and board[2]== computer:
-           board[6] = computer
-           
-    elif   board[2]==current_player and board[1]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-" and board[0]==computer:
-           board[8] = computer
-           
-    elif   board[6]==current_player and board[0]==board[1]==board[2]==board[3]== board[4]==board[5]==board[7]=="-" and board[8]== computer:
-           board[0] = computer
-    elif   board[8]==current_player and board[0]==board[1]==board[2]==board[3]== board[4]==board[5]==board[7]=="-" and board[6]==computer:
-           board[2] = computer
-           
-           
-           
-     # case when computer make first entry 
-    elif   board[0]==board[1]==board[2]==board[3]== board[4]==board[5]==board[6]==board[7]==board[8]=="-":
-         board[0]=computer
-    
-    
-    # for rows with 2 enteries
-        # for row 1
-    elif   board[0] == board[1] == current_player and board[2] == "-":
-         board[2] = computer
-    elif board[0] == board[2] == current_player and board[1] == "-":
-         board[1]  = computer
-    elif board[1] == board[2] == current_player and board[0] == "-":
-         board[0]  = computer
-         # for row 2
-    elif board[3] == board[4] == current_player and board[5] == "-":
-         board[5]  = computer     
-    elif board[3] == board[5] == current_player and board[4] == "-":
-         board[4]  = computer
-    elif board[4] == board[5] == current_player and board[3] == "-":
-         board[3]  = computer
-         
-         #for row 3
-    elif board[6] == board[7] == current_player and board[8] == "-":
-         board[8]  = computer
-    elif board[6] == board[8] == current_player and board[7] == "-":
-         board[7]  = computer
-    elif board[0] == board[1] == current_player and board[3] == "-":
-         board[2]  = computer
-         
-         # for column 1
-    elif board[0] == board[3] == current_player and board[6] == "-":
-         board[6]  = computer
-    elif board[0] == board[6] == current_player and board[3] == "-":
-         board[3]  = computer
-    elif board[3] == board[6] == current_player and board[0] == "-":
-         board[0]  = computer 
-         # for column 2
-    elif board[1] == board[4] == current_player and board[7] == "-":
-         board[7]  = computer
-    elif board[1] == board[7] == current_player and board[4] == "-":
-         board[4]  = computer
-    elif board[4] == board[7] == current_player and board[1] == "-":
-         board[1]  = computer 
-         # for column 3
-    elif board[2] == board[5] == current_player and board[8] == "-":
-         board[8]  = computer
-    elif board[2] == board[8] == current_player and board[5] == "-":
-         board[5]  = computer
-    elif board[5] == board[8] == current_player and board[2] == "-":
-         board[2]  = computer    
-         
-         # for diagonls
-         # from left top to right down
-    elif board[0]==board[4]== current_player    and board[8]=="-":
-        board[8]= computer
-    elif board[0]==board[8]== current_player    and board[4]=="-":
-        board[4]= computer
-    elif board[8]==board[4]== current_player    and board[0]=="-":
-        board[0]= computer
-        
-        
-        # from right top to left down
-    elif board[2]==board[4]== current_player    and board[6]=="-":
-        board[6]= computer
-    elif board[6]==board[4]== current_player    and board[2]=="-":
-        board[2]= computer
-    elif board[2]==board[6]== current_player    and board[4]=="-":
-        board[4]= computer
-    
-    
-# case when it check for its win (egoist)---------------------------------------
-    
-    # checking Rows
-    # checking in 1 row
-    elif board[0]==board[1]==computer and board[2]=="-":
-        board[2]==computer
-    elif board[0]==board[2]==computer and board[1]=="-":
-        board[1]==computer
-    elif board[1]==board[2]==computer and board[0]=="-":
-        board[0]==computer
-        
-      # checking in 2 row  
-    elif board[3]==board[4]==computer and board[5]=="-":
-        board[5]==computer
-    elif board[3]==board[5]==computer and board[4]=="-":
-        board[4]==computer
-    elif board[4]==board[5]==computer and board[3]=="-":
-        board[3]==computer
-        
-        # checking in 3 row
-    elif board[6]==board[7]==computer and board[8]=="-":
-        board[8]==computer
-    elif board[6]==board[8]==computer and board[7]=="-":
-        board[7]==computer
-    elif board[7]==board[8]==computer and board[6]=="-":
-        board[6]==computer
-        
-    #checking column
-    # checking column  1
-    elif board[0]==board[3]==computer and board[6]=="-":
-        board[6]==computer
-    elif board[6]==board[0]==computer and board[3]=="-":
-        board[3]==computer
-    elif board[3]==board[6]==computer and board[0]=="-":
-        board[0]==computer
-    
-    #checking column 2
-    elif board[1]==board[4]==computer and board[7]=="-":
-        board[7]==computer
-    elif board[1]==board[7]==computer and board[4]=="-":
-        board[4]==computer
-    elif board[7]==board[4]==computer and board[1]=="-":
-        board[1]==computer
-    
-    #checking column 3
-    elif board[2]==board[5]==computer and board[8]=="-":
-        board[8]==computer
-    elif board[2]==board[8]==computer and board[5]=="-":
-        board[5]==computer
-    elif board[5]==board[8]==computer and board[2]=="-":
-        board[2]==computer
-     
-    # checking diagonls
-    # checking diagonal_1
-    elif board[0]==board[4]==computer and board[8]=="-":
-        board[8]==computer
-    elif board[0]==board[8]==computer and board[4]=="-":
-        board[4]==computer
-    elif board[4]==board[8]==computer and board[0]=="-":
-        board[0]==computer
-    
-    #checking diagonal_2
-    elif board[2]==board[4]==computer and board[6]=="-":
-        board[6]==computer
-    elif board[2]==board[6]==computer and board[4]=="-":
-        board[4]==computer
-    elif board[4]==board[6]==computer and board[2]=="-":
-        board[2]==computer
- # egoist end-------------------------------------------  
-    
-    return
 
 play_game()    
