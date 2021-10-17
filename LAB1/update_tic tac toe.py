@@ -5,8 +5,14 @@ game_going = True
 
 winner = None
 
+X= 1
+O= -1
+tie= 0
 
+score=0
+bestscore=0 
 
+result="-"
 
 demo_board= ["1","2","3",
              "4","5","6",
@@ -160,7 +166,7 @@ def response():
     else:
         quit()
     return
-def handle_turn(player):
+def handle_turn():
     global human,empty_count
     if player == human:
        player_name = "Your"
@@ -238,6 +244,7 @@ def check_rows():
     
     if row_1 or row_2 or row_3:
         game_going = False
+        
     
     if row_1:
         return board[0]
@@ -296,9 +303,16 @@ def check_if_tie():
     
     if "-" not in board:
         game_going = False
+        
     return
 
-
+def result_win():
+    if winner == computer:
+        result = 10
+    elif winner == human:
+        result = -10
+    elif winner == "tie":
+        result=0
   
 def flip_player():
     #global variable
@@ -317,10 +331,79 @@ def flip_player():
 ### implementation of ai_calculate_position function to get position automatically by intelligence
 
 def intelligence():
+    find_best_move()
+    
+    # board[move]=computer
      
         
     return
     
     
+        
+        
+    
+# for finding empty slots in board    
+def get_empty_pos():
+     j=0
+     empty=[9]*9
+     for i in range (9):
+         if board[i]=='-':
+             empty[j]=i
+             j+=1
+     print("in get_empty_pos function")         
+     print(empty)
+     return empty
+    
 
+def find_best_move ():
+    global score,bestscore
+    bestscore= -20 
+    for i in range(9):
+       if board[i]=='-':
+           board[i]=computer
+           score=minimax(0, True)
+           board[i]='-'
+           
+           bestscore= max(score,bestscore)
+           bestMove=i
+             
+            
+    
+    board[bestMove]=computer
+
+    return
+
+
+def minimax(depth,ismax):
+    global score,bestscore
+    result_win()
+    if game_going:
+        if result != "-":
+            return int(result)
+     
+    if ismax:
+        bestscore=-20
+        for i in range(9):
+            if board[i]=='-':
+                board[i]=computer
+                score = minimax(depth+1,False)
+                board[i]='-'
+                bestscore=max(score,bestscore)
+        return bestscore
+     
+    else:
+        bestscore= 20
+        for i in range(9):
+            if board[i]=='-':
+                board[i]= human
+                score = minimax(depth+1,True)
+                board[i]='-'
+                bestscore=min(score,bestscore)
+        return bestscore 
+    
+   
+
+
+
+    
 play_game()    
